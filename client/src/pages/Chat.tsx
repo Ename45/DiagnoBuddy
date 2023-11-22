@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 
-import { getCurrentDate } from '../utils/dateUtils';
+import { getCurrentDate, getCurrentTime } from '../utils/dateUtils';
 
 import Navbar from '../components/Navbar';
 import Message from '../components/Message';
@@ -8,15 +8,66 @@ import Message from '../components/Message';
 import sendIcon from '../assets/svg/send.svg';
 import avatar from '../assets/images/ai.png';
 
+interface MessageItem {
+    text: string;
+    time: string;
+    isUser: boolean;
+}
+
+const userConvo: MessageItem[] = [
+    { text: 'Hello there...', time: '7:23 AM', isUser: true },
+    {
+        text: 'Good morning nice to meet you. \n What is your name?',
+        time: '7:23 AM',
+        isUser: false,
+    },
+];
+
 export default function Chat() {
-    const [messages, setMessages] = useState([
-        { text: 'Hello there...', time: '7:23 AM', isUser: true },
-        {
-            text: 'Good morning nice to meet you. \n What is your name? Thank you for chatting with Diagnobuddy. Whatever advice you receive should not be substituted for professional medical diagnosis.',
-            time: '7:23 AM',
-            isUser: false,
-        },
-    ]);
+    const [messages, setMessages] = useState<MessageItem[]>(userConvo);
+    const [message, setMessage] = useState('');
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        // Add user's message to the chat
+        setMessages((prevMessages) => [
+            ...prevMessages,
+            { text: message, time: getCurrentTime(), isUser: true },
+        ]);
+
+        // Clear the input field
+        setMessage('');
+
+        // Display chatbot response with animation
+        setMessages((prevMessages) => [
+            ...prevMessages,
+            { text: 'Thinking...', time: getCurrentTime(), isUser: false },
+        ]);
+
+        // Simulate chatbot processing delay
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+
+        // Add chatbot's response to the chat
+        setMessages((prevMessages) => [
+            ...prevMessages.slice(0, -1),
+            { text: 'Chatbot response', time: getCurrentTime(), isUser: false },
+        ]);
+    };
+
+    // Update the message state as the user types in the textarea
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setMessage(e.target.value);
+    };
+
+    // Handle key events in the textarea, specifically preventing new lines on Enter without Shift
+    const handleKeyDown = (e: any) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault(); // Prevents a new line in the textarea
+
+            handleSubmit(e);
+        }
+    };
 
     return (
         <main>
@@ -25,6 +76,7 @@ export default function Chat() {
             <main className='px-4 pt-9 pb-28 font-manrope text-mono-dark bg-gray-light lg:bg-white lg:px-[150px] lg:pt-24 lg:pb-40 min-h-[90svh]'>
                 <Greeting />
 
+                {/* Messages Container */}
                 <section aria-label='messages-container'>
                     {messages.map((message, index) => (
                         <Message key={index} data={message} />
@@ -32,10 +84,15 @@ export default function Chat() {
                 </section>
 
                 <div className='max-w-[1440px] fixed left-4 right-4 bottom-0 pb-9 bg-gray-light rounded-t-[1.8rem] lg:left-[150px] lg:right-[150px] lg:pb-[50px] lg:bg-white'>
-                    <form className=' bg-gray px-4 py-2 leading-6 flex items-center gap-4 rounded-full '>
+                    <form
+                        onSubmit={handleSubmit}
+                        className=' bg-gray px-4 py-2 leading-6 flex items-center gap-4 rounded-full '
+                    >
                         <textarea
                             rows={1}
-                            name='userInput'
+                            value={message}
+                            onChange={handleChange}
+                            onKeyDown={handleKeyDown}
                             placeholder='Type your message...'
                             className='w-full py-2 placeholder:text-mono-dark bg-transparent outline-none resize-none h-auto max-h-[260px]'
                         />
