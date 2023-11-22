@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
 })
 
 
-app.use("/api/v1/diagnoBuddy/chats", chatRoutes)
+app.use("/api/v1/diagnoBuddy/chats", ChatRoutes)
 
 
 app.post("/ask", async (req, res) => {
