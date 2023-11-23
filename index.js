@@ -13,50 +13,50 @@ app.use(cors({
 }));
 
 
-app.get("/", (req, res) => {
-  res.send("Hi its me")
-})
+// app.get("/", (req, res) => {
+//   res.send("Hi its me")
+// })
 
 
 app.use("/api/v1/diagnoBuddy/chats", ChatRoutes)
 
 
-app.post("/ask", async (req, res) => {
-  const userReq = req.body.msg
+// app.post("/ask", async (req, res) => {
+//   const userReq = req.body.msg
 
-  console.log(userReq)
+//   console.log(userReq)
 
-  if (userReq !== "") {
-    // const errorDetails = [
-    //   { loc: ["string", 0], msg: `User input: ${userReq}`, type: "string" },
-    // ];
+//   if (userReq !== "") {
+//     // const errorDetails = [
+//     //   { loc: ["string", 0], msg: `User input: ${userReq}`, type: "string" },
+//     // ];
 
-    try {
-      const apiUrl = `https://diagnobuddy.azurewebsites.net/api/gpmodel/?user_input=${encodeURIComponent(
-        userReq
-      )}`;
+//     try {
+//       const apiUrl = `https://diagnobuddy.azurewebsites.net/api/gpmodel/?user_input=${encodeURIComponent(
+//         userReq
+//       )}`;
 
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        // body: JSON.stringify({ detail: errorDetails }),
-      });
+//       const response = await fetch(apiUrl, {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         // body: JSON.stringify({ detail: errorDetails }),
+//       });
 
-      const data = await response.json();
-      res.json(data);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  }
-  else {
-    return res.send("oops!! please input something, so i can advise accordingly")
-  }
+//       const data = await response.json();
+//       res.json(data);
+//     } catch (error) {
+//       console.error(error);
+//       res.status(500).json({ error: "Internal Server Error" });
+//     }
+//   }
+//   else {
+//     return res.send("oops!! please input something, so i can advise accordingly")
+//   }
 
   
-});
+// });
 
 
 

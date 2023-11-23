@@ -3,7 +3,7 @@ const router = express.Router()
 const ChatController = require("../controllers/ChatController")
 
 
-router.post("/ask", ChatController.processResponses)
+router.post("/", ChatController.processResponses)
 
 
 
