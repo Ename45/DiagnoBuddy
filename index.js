@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const ChatRoutes = require("./src/routes/ChatRoutes")
+const SendChatsToMailRoutes = require("./src/routes/SendChatsToMailRoutes")
 require("dotenv").config()
 
 const app = express()
@@ -18,7 +19,8 @@ app.use(cors({
 // })
 
 
-app.use("/api/v1/diagnoBuddy/chats", ChatRoutes)
+app.use("/api/v1/diagnoBuddy/chats", ChatRoutes);
+app.use("/api/v1/diagnoBuddy/sendMail", SendChatsToMailRoutes);
 
 
 // app.post("/ask", async (req, res) => {
