@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Mansalva&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*  -------------------------------
+            Custom Styling
+    ------------------------------  */
+
+.mask::before {
+    position: absolute;
+    content: url('./assets/images/gradient-mask-sm.webp');
+    inset: 0;
+    z-index: -1;
+}
+
+@media screen and (min-width: 1024px) {
+    .mask::before {
+        content: url('./assets/images/gradient-mask-lg.webp');
+        left: 0;
+        top: 0;
+    }
+}
