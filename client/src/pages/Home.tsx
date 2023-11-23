@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 import logoIcon from '../assets/svg/logo.svg';
 import homeImg from '../assets/images/home.png';
@@ -137,7 +138,32 @@ function HomePage({ action }: PageProps) {
     );
 }
 
+interface FormData {
+    name: string;
+    email: string;
+}
+
 function WelcomePage({ action }: PageProps) {
+    const navigate = useNavigate();
+    const [formData, setFormData] = useState<FormData>({
+        name: '',
+        email: '',
+    });
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault(); // Prevent the default form submission behavior
+
+        // Redirect to the chat page
+        navigate('/chat', { replace: true });
+    };
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value,
+        }));
+    };
     return (
         <>
             {/* Logo Icon */}
@@ -178,7 +204,7 @@ function WelcomePage({ action }: PageProps) {
                         Hello, <br /> Welcome!
                     </h1>
 
-                    <form action='POST' className='lg:max-w-[460px]'>
+                    <form onSubmit={handleSubmit} className='lg:max-w-[460px]'>
                         {[
                             {
                                 label: 'Your Name',
@@ -217,6 +243,8 @@ function WelcomePage({ action }: PageProps) {
                                     type={type}
                                     name={label}
                                     id={label}
+                                    value={formData[name]}
+                                    onChange={handleInputChange}
                                     placeholder={placeholder}
                                     className='border border-[#878787] rounded-full py-[18px] px-4 placeholder:text-mono-dark bg-transparent lg:text-lg lg:py-4'
                                     required
