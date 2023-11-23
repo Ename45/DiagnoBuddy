@@ -138,17 +138,17 @@ function HomePage({ action }: PageProps) {
     );
 }
 
-interface FormData {
-    name: string;
-    email: string;
-}
+// interface FormData {
+//     name: string;
+//     email: string;
+// }
 
 function WelcomePage({ action }: PageProps) {
     const navigate = useNavigate();
-    const [formData, setFormData] = useState<FormData>({
-        name: '',
-        email: '',
-    });
+    // const [formData, setFormData] = useState<FormData>({
+    //     name: '',
+    //     email: '',
+    // });
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); // Prevent the default form submission behavior
@@ -157,13 +157,13 @@ function WelcomePage({ action }: PageProps) {
         navigate('/chat', { replace: true });
     };
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
+    // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // const { name, value } = e.target;
+    // setFormData((prevData) => ({
+    //     ...prevData,
+    //     [name]: value,
+    // }));
+    // };
     return (
         <>
             {/* Logo Icon */}
@@ -243,8 +243,8 @@ function WelcomePage({ action }: PageProps) {
                                     type={type}
                                     name={label}
                                     id={label}
-                                    value={formData[name]}
-                                    onChange={handleInputChange}
+                                    // value={formData[name]}
+                                    // onChange={handleInputChange}
                                     placeholder={placeholder}
                                     className='border border-[#878787] rounded-full py-[18px] px-4 placeholder:text-mono-dark bg-transparent lg:text-lg lg:py-4'
                                     required
