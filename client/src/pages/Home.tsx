@@ -42,7 +42,7 @@ export default function Home() {
 
     return (
         <div
-            className={`px-7 lg:px-[150px] lg:pt-14 relative h-[100svh] overflow-hidden ${
+            className={`px-5 lg:px-[150px] lg:pt-14 relative min-h-[100svh] ${
                 view ? '' : 'mask'
             }`}
         >
@@ -66,7 +66,7 @@ function HomePage({ action }: PageProps) {
     return (
         <>
             {/* Logo Icon */}
-            <header className='flex items-center justify-center gap-2 lg:justify-start pt-11 lg:pt-0'>
+            <header className='flex items-center justify-center gap-2 lg:justify-start pt-8 lg:pt-0'>
                 <img
                     loading='lazy'
                     src={logoIcon}
@@ -78,7 +78,7 @@ function HomePage({ action }: PageProps) {
                 </span>
             </header>
 
-            <motion.main className='lg:grid grid-cols-2 mt-11 lg:mt-[60px]'>
+            <motion.main className='lg:grid grid-cols-2 mt-8 mb-14 lg:mt-[60px]'>
                 <div className='font-manrope text-center text-mono-dark mb-[75px] lg:mb-0 lg:text-left'>
                     <motion.h1
                         initial={{ opacity: 0, x: -30 }}
@@ -103,7 +103,7 @@ function HomePage({ action }: PageProps) {
                             type: 'spring',
                             duration: 0.8,
                         }}
-                        className='text-2xl my-8 lg:my-10 lg:text-[2rem]'
+                        className='text-xl my-6 lg:my-10 lg:text-[2rem]'
                     >
                         Diagnobuddy is here to help.{' '}
                     </motion.p>
@@ -114,7 +114,7 @@ function HomePage({ action }: PageProps) {
                         whileInView='visible'
                         viewport={{ once: true }}
                         onClick={action}
-                        className='py-4 w-[200px] rounded-full bg-primary text-white font-bold text-lg lg:w-[315px] lg:text-xl'
+                        className='py-4 w-[200px] rounded-full bg-primary text-white font-bold lg:w-[315px] lg:text-xl'
                         aria-label='Click to go to Welcome Page'
                     >
                         Say hello

@@ -9,16 +9,27 @@
     ------------------------------  */
 
 .mask::before {
+    content: '';
     position: absolute;
-    content: url('./assets/images/gradient-mask-sm.webp');
-    inset: 0;
     z-index: -1;
+    top: -1rem;
+    left: 50%;
+    width: 90%;
+    height: 340px;
+    filter: blur(250px);
+    border-radius: 999px;
+    background: #ccb2ff;
+    transform: translateX(-50%);
 }
 
 @media screen and (min-width: 1024px) {
     .mask::before {
-        content: url('./assets/images/gradient-mask-lg.webp');
+        position: absolute;
+        width: 100%;
+        height: 100%;
         left: 0;
         top: 0;
+        background: rgba(87, 109, 223, 0.3);
+        filter: blur(400px);
     }
 }
