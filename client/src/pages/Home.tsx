@@ -42,7 +42,7 @@ export default function Home() {
 
     return (
         <div
-            className={`px-5 lg:px-[150px] lg:pt-14 relative min-h-[100svh] ${
+            className={`px-5 lg:px-[150px] lg:pt-14 relative h-[100svh] max-width ${
                 view ? '' : 'mask'
             }`}
         >
@@ -78,7 +78,7 @@ function HomePage({ action }: PageProps) {
                 </span>
             </header>
 
-            <motion.main className='lg:grid grid-cols-2 mt-8 mb-14 lg:mt-[60px]'>
+            <motion.main className='lg:grid grid-cols-2 mt-8 pb-16 lg:mt-[60px]'>
                 <div className='font-manrope text-center text-mono-dark mb-[75px] lg:mb-0 lg:text-left'>
                     <motion.h1
                         initial={{ opacity: 0, x: -30 }}
@@ -182,7 +182,7 @@ function WelcomePage({ action }: PageProps) {
             {/* Button toogles Page view */}
             <button
                 onClick={action}
-                className='float-left mt-4 -ml-3 lg:hidden'
+                className='absolute top-6 left-6 lg:hidden'
             >
                 <img
                     loading='lazy'
@@ -197,60 +197,65 @@ function WelcomePage({ action }: PageProps) {
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.5, ease: 'easeInOut' }}
-                className='lg:grid grid-cols-2 -mx-3 items-end justify-between lg:mx-0'
+                className='lg:grid grid-cols-2 items-end justify-between h-full lg:h-auto lg:pb-10'
             >
-                <div className='font-manrope text-mono-dark text-center lg:text-left'>
+                <div className='font-manrope text-mono-dark text-center lg:text-left h-full w-full flex flex-col items-stretch'>
                     <h1 className='font-bold text-[2rem] my-[60px] lg:mb-[50px] lg:text-[4rem] lg:font-extrabold'>
                         Hello, <br /> Welcome!
                     </h1>
 
-                    <form onSubmit={handleSubmit} className='lg:max-w-[460px]'>
-                        {[
-                            {
-                                label: 'Your Name',
-                                placeholder: 'John Doe',
-                                type: 'text',
-                            },
-                            {
-                                label: 'Email address',
-                                placeholder: 'johndoe@gmail.com',
-                                type: 'email',
-                            },
-                        ].map(({ label, placeholder, type }, index) => (
-                            <motion.div
-                                initial={{ opacity: 0, translateY: 50 }}
-                                whileInView={{
-                                    opacity: 1,
-                                    translateY: 0,
-                                    transition: {
-                                        duration: 0.3,
-                                        ease: 'easeIn',
-                                        delay: index * 0.1, // Add a delay to stagger the animations
-                                    },
-                                }}
-                                viewport={{ once: true, amount: 0.1 }}
-                                key={label}
-                                className='flex flex-col gap-4 mb-10 text-left lg:mb-8'
-                            >
-                                <label
-                                    htmlFor={label}
-                                    className='text-black font-semibold text-lg'
+                    <form
+                        onSubmit={handleSubmit}
+                        className='lg:max-w-[460px] flex flex-col flex-1'
+                    >
+                        <div className='flex-grow'>
+                            {[
+                                {
+                                    label: 'Your Name',
+                                    placeholder: 'John Doe',
+                                    type: 'text',
+                                },
+                                {
+                                    label: 'Email address',
+                                    placeholder: 'johndoe@gmail.com',
+                                    type: 'email',
+                                },
+                            ].map(({ label, placeholder, type }, index) => (
+                                <motion.div
+                                    initial={{ opacity: 0, translateY: 50 }}
+                                    whileInView={{
+                                        opacity: 1,
+                                        translateY: 0,
+                                        transition: {
+                                            duration: 0.3,
+                                            ease: 'easeIn',
+                                            delay: index * 0.1, // Add a delay to stagger the animations
+                                        },
+                                    }}
+                                    viewport={{ once: true, amount: 0.1 }}
+                                    key={label}
+                                    className='flex flex-col gap-2 mb-8 text-left'
                                 >
-                                    {label}
-                                </label>
+                                    <label
+                                        htmlFor={label}
+                                        className='text-black font-semibold lg:font-bold lg:text-lg'
+                                    >
+                                        {label}
+                                    </label>
 
-                                <input
-                                    type={type}
-                                    name={label}
-                                    id={label}
-                                    // value={formData[name]}
-                                    // onChange={handleInputChange}
-                                    placeholder={placeholder}
-                                    className='border border-[#878787] rounded-full py-[18px] px-4 placeholder:text-mono-dark bg-transparent lg:text-lg lg:py-4'
-                                    required
-                                />
-                            </motion.div>
-                        ))}
+                                    <input
+                                        type={type}
+                                        name={label}
+                                        id={label}
+                                        // value={formData[name]}
+                                        // onChange={handleInputChange}
+                                        placeholder={placeholder}
+                                        className='border border-[#878787] rounded-full py-[18px] px-6 placeholder:text-mono-dark bg-transparent lg:text-lg lg:py-4'
+                                        required
+                                    />
+                                </motion.div>
+                            ))}
+                        </div>
 
                         <motion.button
                             variants={fadeWithScale}
@@ -258,7 +263,7 @@ function WelcomePage({ action }: PageProps) {
                             whileInView='visible'
                             viewport={{ once: true }}
                             type='submit'
-                            className='font-bold text-lg py-4 w-[250px] rounded-full bg-primary text-white mt-[81px] lg:w-full lg:mt-2 lg:text-xl'
+                            className='font-bold py-4 w-[210px] rounded-full bg-primary text-white mt-[81px] lg:w-full lg:mt-2 lg:text-xl mx-auto lg:mx-0 mb-11 lg:mb-0'
                         >
                             Start Consultation
                         </motion.button>
