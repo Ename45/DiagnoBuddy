@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
 import useChatStore from '../store/chatStore';
+import useAuthStore from '../store/authStore';
 
 import logoIcon from '../assets/svg/logo.svg';
 import homeImg from '../assets/images/home.png';
@@ -143,9 +144,12 @@ function HomePage({ action }: PageProps) {
 function WelcomePage({ action }: PageProps) {
     const navigate = useNavigate();
     const { userName, userEmail, setUserName, setUserEmail } = useChatStore();
+    const { setAuthentication } = useAuthStore();
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); // Prevent the default form submission behavior
+
+        setAuthentication(true);
 
         // Redirect to the chat page
         navigate('/chat', { replace: true });

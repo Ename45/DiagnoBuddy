@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import Home from './pages/Home.tsx';
 import Chat from './pages/Chat.tsx';
+import PrivateRoute from './components/PrivateRoute.tsx';
 import './index.css';
 
 const router = createBrowserRouter([
@@ -13,7 +14,11 @@ const router = createBrowserRouter([
     },
     {
         path: '/chat',
-        element: <Chat />,
+        element: (
+            <PrivateRoute>
+                <Chat />
+            </PrivateRoute>
+        ),
     },
 ]);
 
