@@ -10,16 +10,20 @@ import sendIcon from '../assets/svg/send.svg';
 import avatar from '../assets/images/ai.png';
 
 export default function Chat() {
-    const { userName, userEmail, messages, addMessage } = useChatStore();
+    const { userName, userEmail, messages, addMessage, deleteLastMessage } =
+        useChatStore();
     const [message, setMessage] = useState('');
+    const [isSending, setIsSending] = useState(false); // Track if a request is being sent
 
     const BOT = 'DiagnoBuddy';
-    const proxyURL = 'https://cors-anywhere.herokuapp.com/';
     const apiURL =
         'https://diagnobuddyserver-production.up.railway.app/api/v1/diagnoBuddy/chats';
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        // Disable the send button and textarea during the request
+        setIsSending(true);
 
         // Add user's message to the chat using Zustand
         addMessage({
@@ -43,9 +47,8 @@ export default function Chat() {
         });
 
         try {
-            const response = await fetch(proxyURL + apiURL, {
+            const response = await fetch(apiURL, {
                 method: 'POST',
-                mode: 'cors',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -60,6 +63,8 @@ export default function Chat() {
 
             const data = await response.json();
 
+            deleteLastMessage(); // Remove the loading animation
+
             // Add chatbot's response to the chat using Zustand
             addMessage({
                 id: 'thiinsdg',
@@ -71,6 +76,8 @@ export default function Chat() {
         } catch (error) {
             console.error('Error calling API:', error);
 
+            deleteLastMessage(); // Remove the loading animation
+
             // Display an error message in the chat if the API call fails
             addMessage({
                 id: 'bonks',
@@ -79,6 +86,9 @@ export default function Chat() {
                 time: getCurrentTime(),
                 isUser: false,
             });
+        } finally {
+            // Enable the send button and textarea after the request is completed
+            setIsSending(false);
         }
     };
 
@@ -97,20 +107,20 @@ export default function Chat() {
     };
 
     return (
-        <main>
+        <main className='flex flex-col h-full'>
             <Navbar />
 
-            <main className='px-4 pt-9 pb-28 font-manrope text-mono-dark bg-gray-light lg:bg-white lg:px-[150px] lg:pt-24 lg:pb-40 min-h-[90svh]'>
+            <main className='px-4 pt-9 font-manrope text-mono-dark bg-gray-light lg:bg-white lg:px-[150px] lg:pt-24 max-width flex-1 w-full relative flex flex-col'>
                 <Greeting />
 
                 {/* Messages Container */}
-                <section aria-label='messages-container'>
+                <section aria-label='messages-container' className='flex-1'>
                     {messages.map((message, index) => (
                         <Message key={index} data={message} />
                     ))}
                 </section>
 
-                <div className='max-w-[1440px] fixed left-4 right-4 bottom-0 pb-9 bg-gray-light rounded-t-[1.8rem] lg:left-[150px] lg:right-[150px] lg:pb-[50px] lg:bg-white'>
+                <div className='sticky bottom-0 pb-9 mt-6 bg-gray-light rounded-t-[1.8rem] lg:left-[150px] lg:right-[150px] lg:pb-[50px] lg:bg-white'>
                     <form
                         onSubmit={handleSubmit}
                         className=' bg-gray px-4 py-2 leading-6 flex items-center gap-4 rounded-full '
@@ -122,10 +132,12 @@ export default function Chat() {
                             onKeyDown={handleKeyDown}
                             placeholder='Type your message...'
                             className='w-full py-2 placeholder:text-mono-dark bg-transparent outline-none resize-none h-auto max-h-[260px]'
+                            disabled={isSending} // Disable the textarea during the request
                         />
                         <button
                             type='submit'
                             className='bg-primary rounded-full h-10 w-10 py-1 pl-1 flex-shrink-0'
+                            disabled={isSending || message.trim().length < 3} // Disable the send button conditionally
                         >
                             <img src={sendIcon} alt='' className='mx-auto' />
 
