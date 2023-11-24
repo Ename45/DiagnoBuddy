@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
+import useChatStore from '../store/chatStore';
+
 import uploadIcon from '../assets/svg/upload.svg';
 import uploadBlueIcon from '../assets/svg/upload-blue.svg';
 import chevronLeftIcon from '../assets/svg/chevron-left.svg';
@@ -12,6 +14,11 @@ import modalImg from '../assets/images/folder.png';
 export default function Navbar() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+
+    const { userEmail } = useChatStore();
+
+    const apiURL =
+        'https://diagnobuddyserver-production.up.railway.app/api/v1/diagnoBuddy/sendMail';
 
     const toggleModal = () => setIsModalOpen(!isModalOpen);
 
@@ -29,6 +36,31 @@ export default function Navbar() {
             window.removeEventListener('resize', handleResize);
         };
     }, []); // Empty dependency array means this effect runs once after the initial render
+
+    const handleSubmit = async () => {
+        toggleModal();
+
+        try {
+            const response = await fetch(apiURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: userEmail,
+                }),
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+            alert(data);
+        } catch (error) {
+            console.error('Error calling API:', error);
+            alert(error);
+        }
+    };
 
     return (
         <>
@@ -147,7 +179,7 @@ export default function Navbar() {
 
                             <div className='max-w-[210px] font-bold space-y-5 mx-auto mb-20 lg:text-xl lg:max-w-[250px]'>
                                 <button
-                                    onClick={toggleModal}
+                                    onClick={handleSubmit}
                                     className='py-4 bg-primary text-white w-full rounded-full'
                                 >
                                     Yes, Please
