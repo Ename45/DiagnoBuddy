@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+
 import aiAvatar from '../assets/images/ai.png';
 import userAvatar from '../assets/images/user.png';
 
@@ -9,6 +11,24 @@ interface MessageProps {
     };
 }
 
+const TypingAnimation = ({ text }: { text: string }) => {
+    const [displayText, setDisplayText] = useState('');
+
+    useEffect(() => {
+        const displayTextInterval = setInterval(() => {
+            setDisplayText((prevText) =>
+                prevText.length < text.length
+                    ? text.slice(0, prevText.length + 1)
+                    : prevText
+            );
+        }, 20); // 50ms is the time interval between each character (AKA typing speed)
+
+        return () => clearInterval(displayTextInterval);
+    }, [text]);
+
+    return <span>{displayText}</span>;
+};
+
 export default function Message({ data }: MessageProps) {
     return (
         <div
@@ -19,7 +39,7 @@ export default function Message({ data }: MessageProps) {
             }`}
         >
             <img
-                src={data.isUser ? userAvatar : aiAvatar} // Shows userAvatar to match with the user's text
+                src={`${data.isUser ? userAvatar : aiAvatar}`} // Shows userAvatar to match with the user's text
                 alt=''
                 className='w-12 h-10 lg:w-[60px] lg:h-[51px]'
             />
@@ -34,9 +54,13 @@ export default function Message({ data }: MessageProps) {
                     </span>
                 </div>
 
-                <p className='leading-6 lg:text-lg max-w-[600px]'>
-                    {data.text}
-                </p>
+                <div className='leading-6 lg:text-lg max-w-[600px]'>
+                    {data.isUser ? (
+                        data.text
+                    ) : (
+                        <TypingAnimation text={data.text} />
+                    )}
+                </div>
             </div>
         </div>
     );
