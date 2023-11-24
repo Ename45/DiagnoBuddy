@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 
+import useChatStore from '../store/chatStore';
+
 import logoIcon from '../assets/svg/logo.svg';
 import homeImg from '../assets/images/home.png';
 import chevronLeftIcon from '../assets/svg/chevron-left.svg';
@@ -138,17 +140,9 @@ function HomePage({ action }: PageProps) {
     );
 }
 
-// interface FormData {
-//     name: string;
-//     email: string;
-// }
-
 function WelcomePage({ action }: PageProps) {
     const navigate = useNavigate();
-    // const [formData, setFormData] = useState<FormData>({
-    //     name: '',
-    //     email: '',
-    // });
+    const { userName, userEmail, setUserName, setUserEmail } = useChatStore();
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); // Prevent the default form submission behavior
@@ -157,13 +151,6 @@ function WelcomePage({ action }: PageProps) {
         navigate('/chat', { replace: true });
     };
 
-    // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // const { name, value } = e.target;
-    // setFormData((prevData) => ({
-    //     ...prevData,
-    //     [name]: value,
-    // }));
-    // };
     return (
         <>
             {/* Logo Icon */}
@@ -214,47 +201,60 @@ function WelcomePage({ action }: PageProps) {
                                     label: 'Your Name',
                                     placeholder: 'John Doe',
                                     type: 'text',
+                                    value: userName,
+                                    action: (
+                                        e: React.ChangeEvent<HTMLInputElement>
+                                    ) => setUserName(e.target.value),
                                 },
                                 {
                                     label: 'Email address',
                                     placeholder: 'johndoe@gmail.com',
                                     type: 'email',
+                                    value: userEmail,
+                                    action: (
+                                        e: React.ChangeEvent<HTMLInputElement>
+                                    ) => setUserEmail(e.target.value),
                                 },
-                            ].map(({ label, placeholder, type }, index) => (
-                                <motion.div
-                                    initial={{ opacity: 0, translateY: 50 }}
-                                    whileInView={{
-                                        opacity: 1,
-                                        translateY: 0,
-                                        transition: {
-                                            duration: 0.3,
-                                            ease: 'easeIn',
-                                            delay: index * 0.1, // Add a delay to stagger the animations
-                                        },
-                                    }}
-                                    viewport={{ once: true, amount: 0.1 }}
-                                    key={label}
-                                    className='flex flex-col gap-2 mb-8 text-left'
-                                >
-                                    <label
-                                        htmlFor={label}
-                                        className='text-black font-semibold lg:font-bold lg:text-lg'
+                            ].map(
+                                (
+                                    { label, placeholder, type, value, action },
+                                    index
+                                ) => (
+                                    <motion.div
+                                        initial={{ opacity: 0, translateY: 50 }}
+                                        whileInView={{
+                                            opacity: 1,
+                                            translateY: 0,
+                                            transition: {
+                                                duration: 0.3,
+                                                ease: 'easeIn',
+                                                delay: index * 0.1, // Add a delay to stagger the animations
+                                            },
+                                        }}
+                                        viewport={{ once: true, amount: 0.1 }}
+                                        key={label}
+                                        className='flex flex-col gap-2 mb-8 text-left'
                                     >
-                                        {label}
-                                    </label>
+                                        <label
+                                            htmlFor={label}
+                                            className='text-black font-semibold lg:font-bold lg:text-lg'
+                                        >
+                                            {label}
+                                        </label>
 
-                                    <input
-                                        type={type}
-                                        name={label}
-                                        id={label}
-                                        // value={formData[name]}
-                                        // onChange={handleInputChange}
-                                        placeholder={placeholder}
-                                        className='border border-[#878787] rounded-full py-[18px] px-6 placeholder:text-mono-dark bg-transparent lg:text-lg lg:py-4'
-                                        required
-                                    />
-                                </motion.div>
-                            ))}
+                                        <input
+                                            type={type}
+                                            name={label}
+                                            id={label}
+                                            value={value}
+                                            onChange={action}
+                                            placeholder={placeholder}
+                                            className='border border-[#878787] rounded-full py-[18px] px-6 placeholder:text-mono-dark bg-transparent lg:text-lg lg:py-4'
+                                            required
+                                        />
+                                    </motion.div>
+                                )
+                            )}
                         </div>
 
                         <motion.button

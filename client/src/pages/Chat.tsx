@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 import { getCurrentDate, getCurrentTime } from '../utils/dateUtils';
+import useChatStore from '../store/chatStore';
 
 import Navbar from '../components/Navbar';
 import Message from '../components/Message';
@@ -8,51 +9,38 @@ import Message from '../components/Message';
 import sendIcon from '../assets/svg/send.svg';
 import avatar from '../assets/images/ai.png';
 
-interface MessageItem {
-    text: string;
-    time: string;
-    isUser: boolean;
-}
-
-const userConvo: MessageItem[] = [
-    { text: 'Hello there...', time: '7:23 AM', isUser: true },
-    {
-        text: 'Good morning nice to meet you. \n What is your name?',
-        time: '7:23 AM',
-        isUser: false,
-    },
-];
-
 export default function Chat() {
-    const [messages, setMessages] = useState<MessageItem[]>(userConvo);
+    const { userName, userEmail, messages, addMessage } = useChatStore();
     const [message, setMessage] = useState('');
+
+    const BOT = 'DiagnoBuddy';
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // Add user's message to the chat
-        setMessages((prevMessages) => [
-            ...prevMessages,
-            { text: message, time: getCurrentTime(), isUser: true },
-        ]);
+        // Add user's message to the chat using Zustand
+        addMessage({
+            id: 'thiing',
+            sender: userName,
+            text: message,
+            time: getCurrentTime(),
+            isUser: true,
+        });
 
         // Clear the input field
         setMessage('');
 
-        // Display chatbot response with animation
-        setMessages((prevMessages) => [
-            ...prevMessages,
-            { text: 'Thinking...', time: getCurrentTime(), isUser: false },
-        ]);
+        // Display chatbot response with loading animation
+        addMessage({
+            id: 'thinking',
+            sender: BOT,
+            text: 'Thinking...',
+            time: getCurrentTime(),
+            isUser: false,
+        });
 
         // Simulate chatbot processing delay
         await new Promise((resolve) => setTimeout(resolve, 1500));
-
-        // Add chatbot's response to the chat
-        setMessages((prevMessages) => [
-            ...prevMessages.slice(0, -1),
-            { text: 'Chatbot response', time: getCurrentTime(), isUser: false },
-        ]);
     };
 
     // Update the message state as the user types in the textarea
