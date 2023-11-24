@@ -14,6 +14,9 @@ export default function Chat() {
     const [message, setMessage] = useState('');
 
     const BOT = 'DiagnoBuddy';
+    const proxyURL = 'https://cors-anywhere.herokuapp.com/';
+    const apiURL =
+        'https://diagnobuddyserver-production.up.railway.app/api/v1/diagnoBuddy/chats';
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -39,8 +42,44 @@ export default function Chat() {
             isUser: false,
         });
 
-        // Simulate chatbot processing delay
-        await new Promise((resolve) => setTimeout(resolve, 1500));
+        try {
+            const response = await fetch(proxyURL + apiURL, {
+                method: 'POST',
+                mode: 'cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: userEmail,
+                    message: message,
+                }),
+            });
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const data = await response.json();
+
+            // Add chatbot's response to the chat using Zustand
+            addMessage({
+                id: 'thiinsdg',
+                sender: 'DiagnoBuddy',
+                text: data.AI_out,
+                time: getCurrentTime(),
+                isUser: false,
+            });
+        } catch (error) {
+            console.error('Error calling API:', error);
+
+            // Display an error message in the chat if the API call fails
+            addMessage({
+                id: 'bonks',
+                sender: BOT,
+                text: 'Oops! Something went wrong. Please try again.',
+                time: getCurrentTime(),
+                isUser: false,
+            });
+        }
     };
 
     // Update the message state as the user types in the textarea
