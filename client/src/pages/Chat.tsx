@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 import { getCurrentDate, getCurrentTime } from '../utils/dateUtils';
 import useChatStore from '../store/chatStore';
@@ -14,6 +14,15 @@ export default function Chat() {
         useChatStore();
     const [message, setMessage] = useState('');
     const [isSending, setIsSending] = useState(false); // Track if a request is being sent
+
+    const containerRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+        if (messages.length)
+            containerRef.current?.scrollIntoView({
+                behavior: 'smooth',
+            });
+    }, [messages.length]);
 
     const BOT = 'DiagnoBuddy';
     const apiURL =
@@ -41,7 +50,7 @@ export default function Chat() {
         addMessage({
             id: 'thinking',
             sender: BOT,
-            text: 'Thinking...',
+            text: 'Typing...',
             time: getCurrentTime(),
             isUser: false,
         });
@@ -102,7 +111,7 @@ export default function Chat() {
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault(); // Prevents a new line in the textarea
 
-            handleSubmit(e);
+            return message.trim().length < 3 ? null : handleSubmit(e); // Prevents sending a message if it's less than 3 characters
         }
     };
 
@@ -114,13 +123,17 @@ export default function Chat() {
                 <Greeting />
 
                 {/* Messages Container */}
-                <section aria-label='messages-container' className='flex-1'>
+                <section
+                    aria-label='messages-container'
+                    className='flex-1 overflow-hidden'
+                >
                     {messages.map((message, index) => (
                         <Message key={index} data={message} />
                     ))}
+                    <div className='pb-6' ref={containerRef}></div>
                 </section>
 
-                <div className='sticky bottom-0 pb-9 mt-6 bg-gray-light rounded-t-[1.8rem] lg:left-[150px] lg:right-[150px] lg:pb-[50px] lg:bg-white'>
+                <div className='sticky bottom-0 pt-6 pb-9 bg-gray-light rounded-t-[1.8rem] lg:left-[150px] lg:right-[150px] lg:pb-[50px] lg:bg-white'>
                     <form
                         onSubmit={handleSubmit}
                         className=' bg-gray px-4 py-2 leading-6 flex items-center gap-4 rounded-full '
