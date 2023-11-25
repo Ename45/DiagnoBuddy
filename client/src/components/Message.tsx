@@ -54,7 +54,7 @@ export default function Message({ data }: MessageProps) {
                     </span>
                 </div>
 
-                <div className='leading-6 lg:text-lg max-w-[600px]'>
+                <div className='leading-6 lg:text-lg max-w-[600px] whitespace-pre-wrap break-words'>
                     {data.isUser ? (
                         data.text
                     ) : (
