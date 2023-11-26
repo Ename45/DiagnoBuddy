@@ -33,7 +33,7 @@ const useChatStore = create<ChatStoreActions>((set) => ({
         {
             id: '1',
             sender: 'DaignoBuddy',
-            text: 'Hi there! I am DaignoBuddy, your personal assistant. How can I help you today?',
+            text: 'Hello! I am DiagnoBuddy, a medical assistant chatbot. My purpose is to help you with any medical concerns or symptoms you may have. How can I assist you today?',
             time: '7:23 AM',
             isUser: false,
         },

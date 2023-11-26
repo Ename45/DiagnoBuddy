@@ -15,15 +15,37 @@ const TypingAnimation = ({ text }: { text: string }) => {
     const [displayText, setDisplayText] = useState('');
 
     useEffect(() => {
-        const displayTextInterval = setInterval(() => {
+        let currentTextIndex = 0;
+        let intervalId: number | null = null;
+
+        const updateText = () => {
             setDisplayText((prevText) =>
-                prevText.length < text.length
-                    ? text.slice(0, prevText.length + 1)
+                currentTextIndex < text.length
+                    ? text.slice(0, currentTextIndex + 1)
                     : prevText
             );
-        }, 20); // 50ms is the time interval between each character (AKA typing speed)
 
-        return () => clearInterval(displayTextInterval);
+            currentTextIndex += 1;
+
+            if (currentTextIndex >= text.length) {
+                clearInterval(intervalId!);
+                intervalId = null;
+            }
+        };
+
+        // Set interval dynamically based on the length of the text
+        const intervalDuration = Math.max(20, Math.floor(1000 / text.length));
+
+        // Clear any existing interval before setting a new one
+        clearInterval(intervalId!);
+
+        // Set up the new interval
+        intervalId = setInterval(updateText, intervalDuration);
+
+        // Clean up the interval when the component unmounts
+        return () => {
+            clearInterval(intervalId!);
+        };
     }, [text]);
 
     return <span>{displayText}</span>;
@@ -45,7 +67,7 @@ export default function Message({ data }: MessageProps) {
             />
 
             <div>
-                <div className='flex items-center gap-2 text-lg mb-2 lg:mb-4'>
+                <div className='flex items-center gap-2 text-lg'>
                     <h2 className='font-bold'>
                         {data.isUser ? 'You' : 'Diagnobuddy'}
                     </h2>
