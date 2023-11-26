@@ -18,11 +18,12 @@ export default function Chat() {
     const containerRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        if (messages.length)
+        if (messages.length > 0 && messages[messages.length - 1].text) {
             containerRef.current?.scrollIntoView({
                 behavior: 'smooth',
             });
-    }, [messages.length]);
+        }
+    }, [messages]);
 
     const BOT = 'DiagnoBuddy';
     const apiURL =
@@ -46,40 +47,72 @@ export default function Chat() {
         // Clear the input field
         setMessage('');
 
-        // Display chatbot response with loading animation
-        addMessage({
-            id: 'thinking',
-            sender: BOT,
-            text: 'Typing...',
-            time: getCurrentTime(),
-            isUser: false,
-        });
-
         try {
-            const response = await fetch(apiURL, {
+            // Check if a session ID exists in sessionStorage
+            let sessionId = sessionStorage.getItem('sessionId');
+            let expirationTime = sessionStorage.getItem('expirationTime');
+
+            // If no session ID or it has expired, make the API call to get a new one
+            if (!sessionId || isSessionExpired(expirationTime)) {
+                const response = await fetch(apiURL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        email: userEmail,
+                        message: message,
+                    }),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Error getting session ID from the API');
+                }
+
+                const data: { sessionId: string } = await response.json();
+
+                // Extract the session ID and set a fixed expiration time (e.g., 5 minutes from now)
+                sessionId = data.sessionId;
+                expirationTime = (Date.now() + 5 * 60 * 1000).toString(); // 5 minutes in milliseconds
+
+                // Store the new session ID and expiration time in sessionStorage
+                sessionStorage.setItem('sessionId', sessionId);
+                sessionStorage.setItem('expirationTime', expirationTime);
+            }
+
+            // Check if the session has expired before making the API call
+            if (isSessionExpired(expirationTime)) {
+                throw new Error('Session has expired');
+            }
+
+            const apiResponse = await fetch(apiURL, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'X-Session-Id': sessionId!,
                 },
                 body: JSON.stringify({
                     email: userEmail,
                     message: message,
                 }),
             });
-            if (!response.ok) {
+
+            if (!apiResponse.ok) {
                 throw new Error('Network response was not ok');
             }
 
-            const data = await response.json();
+            const responseData = await apiResponse.json();
+
+            console.log(responseData);
 
             deleteLastMessage(); // Remove the loading animation
 
             // Add chatbot's response to the chat using Zustand
             addMessage({
                 id: 'thiinsdg',
-                sender: 'DiagnoBuddy',
-                text: data.AI_out,
-                time: getCurrentTime(),
+                sender: BOT,
+                text: responseData.data.AI_out,
+                time: getCurrentTime(), // Assuming getCurrentTime is defined somewhere in your component
                 isUser: false,
             });
         } catch (error) {
@@ -92,13 +125,22 @@ export default function Chat() {
                 id: 'bonks',
                 sender: BOT,
                 text: 'Oops! Something went wrong. Please try again.',
-                time: getCurrentTime(),
+                time: getCurrentTime(), // Assuming getCurrentTime is defined somewhere in your component
                 isUser: false,
             });
         } finally {
             // Enable the send button and textarea after the request is completed
             setIsSending(false);
         }
+    };
+
+    // Function to check if the session has expired
+    const isSessionExpired = (expirationTime: string | null) => {
+        if (!expirationTime) {
+            return true;
+        }
+
+        return Date.now() > parseInt(expirationTime, 10);
     };
 
     // Update the message state as the user types in the textarea
@@ -119,7 +161,7 @@ export default function Chat() {
         <div className='flex flex-col h-full'>
             <Navbar />
 
-            <main className='font-manrope text-mono-dark bg-gray-light h-[100.1vh] overflow-y-hidden'>
+            <main className='font-manrope text-mono-dark bg-gray-light h-[100.1vh]'>
                 <div className='px-4 pt-9 lg:px-[150px] lg:pt-24 max-width flex-1 w-full relative flex flex-col'>
                     <Greeting />
 
