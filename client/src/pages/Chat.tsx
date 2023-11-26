@@ -18,12 +18,11 @@ export default function Chat() {
     const containerRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
-        if (messages.length > 0 && messages[messages.length - 1].text) {
+        if (messages.length)
             containerRef.current?.scrollIntoView({
                 behavior: 'smooth',
             });
-        }
-    }, [messages]);
+    }, [messages.length]);
 
     const BOT = 'DiagnoBuddy';
     const apiURL =
@@ -46,6 +45,15 @@ export default function Chat() {
 
         // Clear the input field
         setMessage('');
+
+        // Display chatbot response with loading animation
+        addMessage({
+            id: 'thinking',
+            sender: BOT,
+            text: 'Thinking...',
+            time: getCurrentTime(),
+            isUser: false,
+        });
 
         try {
             // Check if a session ID exists in sessionStorage
@@ -158,11 +166,11 @@ export default function Chat() {
     };
 
     return (
-        <div className='flex flex-col h-full'>
+        <div className='flex flex-col'>
             <Navbar />
 
-            <main className='font-manrope text-mono-dark bg-gray-light h-[100.1vh]'>
-                <div className='px-4 pt-9 lg:px-[150px] lg:pt-24 max-width flex-1 w-full relative flex flex-col'>
+            <main className='font-manrope text-mono-dark bg-gray-light'>
+                <div className='px-4 pt-9 lg:px-[150px] lg:pt-24 max-width flex-1 w-full relative flex flex-col min-h-screen'>
                     <Greeting />
 
                     {/* Messages Container */}
@@ -173,7 +181,6 @@ export default function Chat() {
                         {messages.map((message, index) => (
                             <Message key={index} data={message} />
                         ))}
-                        <div ref={containerRef}></div>
                     </section>
 
                     <div className='sticky bottom-0 mt-6 pb-9 bg-gray-light rounded-t-[1.8rem] lg:left-[150px] lg:right-[150px] lg:pb-[50px]'>
@@ -209,6 +216,8 @@ export default function Chat() {
 
                                 <span className='sr-only'>Send message</span>
                             </button>
+
+                            <div ref={containerRef}></div>
                         </form>
                     </div>
                 </div>
