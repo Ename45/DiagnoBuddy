@@ -194,7 +194,7 @@ export default function Chat() {
                         <div ref={containerRef}></div>
                     </section>
 
-                    <div className='sticky bottom-0 pb-9 bg-gray-light rounded-t-[1.8rem] lg:left-[150px] lg:right-[150px] lg:pb-[50px]'>
+                    <div className='sticky bottom-0 pb-9 bg-gray-light rounded-t-[1.8rem] lg:left-[150px] lg:right-[150px] lg:pb-[50px] lg:bg-white'>
                         <form
                             onSubmit={handleSubmit}
                             className=' bg-gray px-4 py-2 leading-6 flex items-center gap-4 rounded-full '
