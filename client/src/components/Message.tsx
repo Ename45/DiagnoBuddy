@@ -45,19 +45,20 @@ const TypingAnimation = ({ text, scrollToBottom }: AnimationProps) => {
             }
 
             if (currentTextIndex >= text.length) {
-                clearInterval(intervalId!);
-                intervalId = null;
-
                 // Scroll to the bottom when the typing animation is complete
                 scrollToBottom();
+
+                // Clear the interval when the animation is complete
+                clearInterval(intervalId!);
+                intervalId = null;
             }
         };
 
-        // Set interval dynamically based on the length of the text
-        const intervalDuration = Math.max(20, Math.floor(1000 / text.length));
-
         // Clear any existing interval before setting a new one
         clearInterval(intervalId!);
+
+        // Set interval dynamically based on the length of the text
+        const intervalDuration = Math.max(20, Math.floor(1000 / text.length));
 
         // Set up the new interval
         intervalId = setInterval(updateText, intervalDuration);
@@ -74,8 +75,10 @@ const TypingAnimation = ({ text, scrollToBottom }: AnimationProps) => {
 export default function Message({ data, action }: MessageProps) {
     return (
         <div
-            className={`px-2 py-4 font-manrope flex items-start gap-2 w-full lg:p-4 relative ${
-                data.isUser ? 'bg-white user' : 'bg-white bot'
+            className={`px-2 py-4 font-manrope flex items-start gap-2 w-full lg:p-4 relative lg:w-fit ${
+                data.isUser
+                    ? ''
+                    : 'bg-primary-light/40 rounded-r-[30px] rounded-bl-[30px]'
             }`}
         >
             <img
@@ -85,7 +88,7 @@ export default function Message({ data, action }: MessageProps) {
             />
 
             <div>
-                <div className='flex items-center gap-2 text-lg'>
+                <div className='flex items-center gap-2 lg:text-lg'>
                     <h2 className='font-bold'>
                         {data.isUser ? 'You' : 'Diagnobuddy'}
                     </h2>
@@ -94,7 +97,7 @@ export default function Message({ data, action }: MessageProps) {
                     </span>
                 </div>
 
-                <div className='leading-6 lg:text-lg max-w-[600px] whitespace-pre-wrap break-words'>
+                <div className='leading-6 lg:text-lg max-w-[550px] whitespace-pre-wrap break-words'>
                     {data.isUser ? (
                         data.text
                     ) : (

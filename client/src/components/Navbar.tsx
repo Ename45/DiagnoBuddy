@@ -64,7 +64,7 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className=' bg-[#E8E3F3] lg:bg-[rgba(232, 227, 243, 0.5)] font-manrope text-mono-dark sticky top-0 z-10'>
+            <nav className='bg-gray-light border-b border-[#C7C7C7] lg:border-none lg:bg-[rgba(232,227,243)] font-manrope text-mono-dark sticky top-0 z-10'>
                 <div className='flex items-center justify-between py-6 px-4 lg:px-[150px] lg:py-6 max-width'>
                     <div className='flex gap-4 items-center'>
                         {/* Icon that displays only on Mobile View */}

@@ -40,28 +40,6 @@
     }
 }
 
-.bot::after,
-.user::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 3px;
-}
-
-.bot::after {
-    background-color: #7e41f5;
-}
-
-.user::after {
-    background-color: #52d6c0;
-}
-/* 
-.primary-btn {
-    transition: all 0.3s ease-in;
-} */
-
 .primary-btn:hover {
     background-color: #6737c5;
     box-shadow: 0px 4px 4px 0px #00000026;

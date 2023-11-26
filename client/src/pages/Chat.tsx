@@ -29,7 +29,7 @@ export default function Chat() {
 
     const BOT = 'DiagnoBuddy';
     const apiURL =
-        'https://diagnobuddyserver-production.up.railway.app/api/v1/diagnoBuddy/chats';
+        'https://cors-anywhere.herokuapp.com/https://diagnobuddyserver-production.up.railway.app/api/v1/diagnoBuddy/chats';
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -53,7 +53,7 @@ export default function Chat() {
         addMessage({
             id: 'thinking',
             sender: BOT,
-            text: 'Thinking...',
+            text: 'Typing...',
             time: getCurrentTime(),
             isUser: false,
         });
@@ -175,7 +175,7 @@ export default function Chat() {
         <div className='flex flex-col'>
             <Navbar />
 
-            <main className='font-manrope text-mono-dark bg-gray-light'>
+            <main className='font-manrope text-mono-dark bg-gray-light lg:bg-white'>
                 <div className='px-4 pt-9 lg:px-[150px] lg:pt-24 max-width flex-1 w-full relative flex flex-col min-h-screen'>
                     <Greeting />
 
@@ -194,7 +194,7 @@ export default function Chat() {
                         <div ref={containerRef}></div>
                     </section>
 
-                    <div className='sticky bottom-0 mt-6 pb-9 bg-gray-light rounded-t-[1.8rem] lg:left-[150px] lg:right-[150px] lg:pb-[50px]'>
+                    <div className='sticky bottom-0 pb-9 bg-gray-light rounded-t-[1.8rem] lg:left-[150px] lg:right-[150px] lg:pb-[50px]'>
                         <form
                             onSubmit={handleSubmit}
                             className=' bg-gray px-4 py-2 leading-6 flex items-center gap-4 rounded-full '
@@ -242,23 +242,21 @@ function Greeting() {
                 loading='lazy'
                 src={avatar}
                 alt=''
-                className='w-[120px] h-[102px] lg:w-[200px] lg:h-[170px] lg:mx-auto'
+                className='w-[100px] h-[85px] lg:w-[200px] lg:h-[170px] lg:mx-auto'
             />
 
-            <h1 className='font-bold text-2xl mt-5 mb-4 lg:mt-9 lg:mb-7'>
+            <h1 className='font-bold text-lg lg:text-2xl mt-6 mb-2 lg:mt-9 lg:mb-8'>
                 Diagnobuddy
             </h1>
 
-            <p className='font-medium text-mono-dark/60 max-w-[675px] lg:text-lg lg:text-mono-light lg:leading-8 lg:mx-auto'>
+            <p className='font-medium text-mono-dark/60 max-w-[675px] text-sm leadeing-6 lg:text-lg lg:text-mono-light lg:leading-8 lg:mx-auto'>
                 Thank you for chatting with Diagnobuddy. Whatever advice you
                 receive should not be substituted for professional medical
                 diagnosis.
             </p>
 
-            <div className='relative h-[1px] w-full bg-mono-dark/60 mt-9 mb-6 lg:mt-16 lg:mb-14'>
-                <span className='absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 font-medium text-sm px-4 bg-gray-light lg:text-base lg:px-8'>
-                    {getCurrentDate()}
-                </span>
+            <div className='mt-9 mb-6 lg:mt-16 lg:mb-14 font-medium text-sm px-4 lg:text-base lg:px-8 flex items-center justify-center '>
+                {getCurrentDate()}
             </div>
         </div>
     );
