@@ -65,7 +65,7 @@ export default function Navbar() {
     return (
         <>
             <nav className='bg-gray-light border-b border-[#C7C7C7] lg:border-none lg:bg-[rgba(232,227,243)] font-manrope text-mono-dark sticky top-0 z-10'>
-                <div className='flex items-center justify-between py-6 px-4 lg:px-[150px] lg:py-6 max-width'>
+                <div className='flex items-center justify-between py-6 px-4 lg:px-[150px] lg:py-5 max-width'>
                     <div className='flex gap-4 items-center'>
                         {/* Icon that displays only on Mobile View */}
                         <img
@@ -83,7 +83,7 @@ export default function Navbar() {
                             className='hidden lg:block w-[60px] h-[50px]'
                         />
 
-                        <div className='space-y-2'>
+                        <div className='space-y-1.5'>
                             <h3 className='font-bold text-xl'>Diagnobuddy</h3>
 
                             <p className='hidden lg:block'>online</p>

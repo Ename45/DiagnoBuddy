@@ -255,8 +255,10 @@ function Greeting() {
                 diagnosis.
             </p>
 
-            <div className='mt-9 mb-6 lg:mt-16 lg:mb-14 font-medium text-sm px-4 lg:text-base lg:px-8 flex items-center justify-center '>
-                {getCurrentDate()}
+            <div className='relative h-[1px] w-full bg-mono-dark/60 mt-9 mb-6 lg:mt-16 lg:mb-14'>
+                <span className='absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 font-medium text-sm px-4 bg-gray-light lg:text-base lg:px-8 lg:bg-white'>
+                    {getCurrentDate()}
+                </span>
             </div>
         </div>
     );
