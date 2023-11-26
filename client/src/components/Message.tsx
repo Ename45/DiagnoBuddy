@@ -9,9 +9,16 @@ interface MessageProps {
         time: string;
         isUser: boolean;
     };
+
+    action?: () => void;
 }
 
-const TypingAnimation = ({ text }: { text: string }) => {
+type AnimationProps = {
+    text: string;
+    scrollToBottom: () => void;
+};
+
+const TypingAnimation = ({ text, scrollToBottom }: AnimationProps) => {
     const [displayText, setDisplayText] = useState('');
 
     useEffect(() => {
@@ -27,9 +34,22 @@ const TypingAnimation = ({ text }: { text: string }) => {
 
             currentTextIndex += 1;
 
+            // Check if the current character is a newline
+            const isNewline =
+                currentTextIndex < text.length &&
+                text[currentTextIndex] === '\n';
+
+            if (isNewline) {
+                // Scroll to the bottom when a newline is encountered
+                scrollToBottom();
+            }
+
             if (currentTextIndex >= text.length) {
                 clearInterval(intervalId!);
                 intervalId = null;
+
+                // Scroll to the bottom when the typing animation is complete
+                scrollToBottom();
             }
         };
 
@@ -51,7 +71,7 @@ const TypingAnimation = ({ text }: { text: string }) => {
     return <span>{displayText}</span>;
 };
 
-export default function Message({ data }: MessageProps) {
+export default function Message({ data, action }: MessageProps) {
     return (
         <div
             className={`px-2 py-4 font-manrope flex items-start gap-2 w-full lg:p-4 relative ${
@@ -78,7 +98,10 @@ export default function Message({ data }: MessageProps) {
                     {data.isUser ? (
                         data.text
                     ) : (
-                        <TypingAnimation text={data.text} />
+                        <TypingAnimation
+                            text={data.text}
+                            scrollToBottom={action ? action : () => {}}
+                        />
                     )}
                 </div>
             </div>

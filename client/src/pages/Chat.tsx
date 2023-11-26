@@ -17,12 +17,15 @@ export default function Chat() {
 
     const containerRef = useRef<HTMLDivElement | null>(null);
 
+    // Function to scroll to the bottom of the messages container
+    const scrollToBottom = () =>
+        containerRef.current?.scrollIntoView({
+            behavior: 'smooth',
+        });
+
     useEffect(() => {
-        if (messages.length)
-            containerRef.current?.scrollIntoView({
-                behavior: 'smooth',
-            });
-    }, [messages.length]);
+        if (messages.length) scrollToBottom();
+    }, [messages]);
 
     const BOT = 'DiagnoBuddy';
     const apiURL =
@@ -123,6 +126,9 @@ export default function Chat() {
                 time: getCurrentTime(), // Assuming getCurrentTime is defined somewhere in your component
                 isUser: false,
             });
+
+            // Scroll to the bottom after the new message has been added
+            setTimeout(scrollToBottom, 2000);
         } catch (error) {
             console.error('Error calling API:', error);
 
@@ -179,8 +185,13 @@ export default function Chat() {
                         className='flex-1 overflow-hidden space-y-6 lg:space-y-8'
                     >
                         {messages.map((message, index) => (
-                            <Message key={index} data={message} />
+                            <Message
+                                key={index}
+                                data={message}
+                                action={scrollToBottom}
+                            />
                         ))}
+                        <div ref={containerRef}></div>
                     </section>
 
                     <div className='sticky bottom-0 mt-6 pb-9 bg-gray-light rounded-t-[1.8rem] lg:left-[150px] lg:right-[150px] lg:pb-[50px]'>
@@ -216,8 +227,6 @@ export default function Chat() {
 
                                 <span className='sr-only'>Send message</span>
                             </button>
-
-                            <div ref={containerRef}></div>
                         </form>
                     </div>
                 </div>
