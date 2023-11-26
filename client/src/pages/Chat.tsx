@@ -29,7 +29,7 @@ export default function Chat() {
 
     const BOT = 'DiagnoBuddy';
     const apiURL =
-        'https://cors-anywhere.herokuapp.com/https://diagnobuddyserver-production.up.railway.app/api/v1/diagnoBuddy/chats';
+        'https://diagnobuddyserver-production.up.railway.app/api/v1/diagnoBuddy/chats';
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
