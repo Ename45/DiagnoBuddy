@@ -116,50 +116,62 @@ export default function Chat() {
     };
 
     return (
-        <main className='flex flex-col h-full'>
+        <div className='flex flex-col h-full'>
             <Navbar />
 
-            <main className='px-4 pt-9 font-manrope text-mono-dark bg-gray-light lg:bg-white lg:px-[150px] lg:pt-24 max-width flex-1 w-full relative flex flex-col'>
-                <Greeting />
+            <main className='font-manrope text-mono-dark bg-gray-light h-[100.1vh] overflow-y-hidden'>
+                <div className='px-4 pt-9 lg:px-[150px] lg:pt-24 max-width flex-1 w-full relative flex flex-col'>
+                    <Greeting />
 
-                {/* Messages Container */}
-                <section
-                    aria-label='messages-container'
-                    className='flex-1 overflow-hidden'
-                >
-                    {messages.map((message, index) => (
-                        <Message key={index} data={message} />
-                    ))}
-                    <div className='pb-6' ref={containerRef}></div>
-                </section>
-
-                <div className='sticky bottom-0 pt-6 pb-9 bg-gray-light rounded-t-[1.8rem] lg:left-[150px] lg:right-[150px] lg:pb-[50px] lg:bg-white'>
-                    <form
-                        onSubmit={handleSubmit}
-                        className=' bg-gray px-4 py-2 leading-6 flex items-center gap-4 rounded-full '
+                    {/* Messages Container */}
+                    <section
+                        aria-label='messages-container'
+                        className='flex-1 overflow-hidden space-y-6 lg:space-y-8'
                     >
-                        <textarea
-                            rows={1}
-                            value={message}
-                            onChange={handleChange}
-                            onKeyDown={handleKeyDown}
-                            placeholder='Type your message...'
-                            className='w-full py-2 placeholder:text-mono-dark bg-transparent outline-none resize-none h-auto max-h-[260px]'
-                            disabled={isSending} // Disable the textarea during the request
-                        />
-                        <button
-                            type='submit'
-                            className='bg-primary rounded-full h-10 w-10 py-1 pl-1 flex-shrink-0'
-                            disabled={isSending || message.trim().length < 3} // Disable the send button conditionally
-                        >
-                            <img src={sendIcon} alt='' className='mx-auto' />
+                        {messages.map((message, index) => (
+                            <Message key={index} data={message} />
+                        ))}
+                        <div ref={containerRef}></div>
+                    </section>
 
-                            <span className='sr-only'>Send message</span>
-                        </button>
-                    </form>
+                    <div className='sticky bottom-0 mt-6 pb-9 bg-gray-light rounded-t-[1.8rem] lg:left-[150px] lg:right-[150px] lg:pb-[50px]'>
+                        <form
+                            onSubmit={handleSubmit}
+                            className=' bg-gray px-4 py-2 leading-6 flex items-center gap-4 rounded-full '
+                        >
+                            <textarea
+                                rows={1}
+                                value={message}
+                                onChange={handleChange}
+                                onKeyDown={handleKeyDown}
+                                placeholder='Type your message...'
+                                className='w-full py-2 placeholder:text-mono-dark bg-transparent outline-none resize-none h-auto max-h-[260px]'
+                                disabled={isSending} // Disable the textarea during the request
+                            />
+                            <button
+                                type='submit'
+                                className={`rounded-full h-10 w-10 py-1 pl-1 flex-shrink-0 ${
+                                    isSending || message.trim().length < 3
+                                        ? 'bg-[#878787]'
+                                        : 'bg-primary primary-btn'
+                                }`}
+                                disabled={
+                                    isSending || message.trim().length < 3
+                                } // Disable the send button conditionally
+                            >
+                                <img
+                                    src={sendIcon}
+                                    alt=''
+                                    className='mx-auto'
+                                />
+
+                                <span className='sr-only'>Send message</span>
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </main>
-        </main>
+        </div>
     );
 }
 
@@ -184,7 +196,7 @@ function Greeting() {
             </p>
 
             <div className='relative h-[1px] w-full bg-mono-dark/60 mt-9 mb-6 lg:mt-16 lg:mb-14'>
-                <span className='absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 font-medium text-sm px-4 bg-gray-light lg:text-base lg:px-8 lg:bg-white'>
+                <span className='absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 font-medium text-sm px-4 bg-gray-light lg:text-base lg:px-8'>
                     {getCurrentDate()}
                 </span>
             </div>

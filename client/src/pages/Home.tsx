@@ -117,7 +117,7 @@ function HomePage({ action }: PageProps) {
                         whileInView='visible'
                         viewport={{ once: true }}
                         onClick={action}
-                        className='py-4 w-[200px] rounded-full bg-primary text-white font-bold lg:w-[315px] lg:text-xl'
+                        className='py-4 w-[200px] rounded-full bg-primary text-white font-bold lg:w-[315px] lg:text-xl primary-btn'
                         aria-label='Click to go to Welcome Page'
                     >
                         Say hello
@@ -267,7 +267,7 @@ function WelcomePage({ action }: PageProps) {
                             whileInView='visible'
                             viewport={{ once: true }}
                             type='submit'
-                            className='font-bold py-4 w-[210px] rounded-full bg-primary text-white mt-[81px] lg:w-full lg:mt-2 lg:text-xl mx-auto lg:mx-0 mb-11 lg:mb-0'
+                            className='font-bold py-4 w-[210px] rounded-full bg-primary text-white mt-[81px] lg:w-full lg:mt-2 lg:text-xl mx-auto lg:mx-0 mb-11 lg:mb-0 primary-btn'
                         >
                             Start Consultation
                         </motion.button>

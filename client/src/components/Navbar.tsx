@@ -64,8 +64,8 @@ export default function Navbar() {
 
     return (
         <>
-            <nav className=' bg-[#E8E3F3] font-manrope text-mono-dark sticky top-0 z-10'>
-                <div className='flex items-center justify-between py-6 px-4 lg:px-[150px] lg:py-6 max-width lg:bg-white/50'>
+            <nav className=' bg-[#E8E3F3] lg:bg-[rgba(232, 227, 243, 0.5)] font-manrope text-mono-dark sticky top-0 z-10'>
+                <div className='flex items-center justify-between py-6 px-4 lg:px-[150px] lg:py-6 max-width'>
                     <div className='flex gap-4 items-center'>
                         {/* Icon that displays only on Mobile View */}
                         <img
@@ -92,7 +92,7 @@ export default function Navbar() {
 
                     <button
                         onClick={toggleModal}
-                        className='lg:px-4 lg:py-2 lg:bg-white lg:flex gap-4 items-center lg:rounded-full'
+                        className='lg:px-4 lg:py-2 lg:bg-white lg:flex gap-4 items-center lg:rounded-full sec-btn'
                     >
                         <img
                             loading='lazy'
@@ -180,14 +180,14 @@ export default function Navbar() {
                             <div className='max-w-[210px] font-bold space-y-5 mx-auto mb-20 lg:text-xl lg:max-w-[250px]'>
                                 <button
                                     onClick={handleSubmit}
-                                    className='py-4 bg-primary text-white w-full rounded-full'
+                                    className='py-4 bg-primary text-white w-full rounded-full primary-btn duration-200 ease-in'
                                 >
                                     Yes, Please
                                 </button>
 
                                 <button
                                     onClick={toggleModal}
-                                    className='py-4 bg-gray text-mono-dark w-full rounded-full'
+                                    className='py-4 bg-gray text-mono-dark w-full rounded-full sec-btn'
                                 >
                                     Cancel
                                 </button>

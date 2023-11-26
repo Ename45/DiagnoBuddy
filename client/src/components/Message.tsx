@@ -54,10 +54,8 @@ const TypingAnimation = ({ text }: { text: string }) => {
 export default function Message({ data }: MessageProps) {
     return (
         <div
-            className={`px-2 py-4 font-manrope flex items-start gap-2 w-full lg:p-4 lg:w-fit ${
-                data.isUser
-                    ? ''
-                    : 'bg-primary-light/40 rounded-r-[30px] rounded-bl-[30px]'
+            className={`px-2 py-4 font-manrope flex items-start gap-2 w-full lg:p-4 relative ${
+                data.isUser ? 'bg-white user' : 'bg-white bot'
             }`}
         >
             <img
